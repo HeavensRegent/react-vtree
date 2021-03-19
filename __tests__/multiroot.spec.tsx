@@ -116,7 +116,7 @@ describe('Multiroot tree', () => {
     expect(list).toHaveLength(1);
     expect(list.props()).toMatchObject({
       children: Row,
-      itemCount: 6,
+      itemCount: 7,
       itemData: expect.any(Object),
       itemSize: 30,
     });
@@ -183,6 +183,16 @@ describe('Multiroot tree', () => {
           isOpenByDefault: true,
           name: 'Foo #7',
           nestingLevel: 1,
+        },
+        isOpen: true,
+        setOpen: expect.any(Function),
+      },
+      {
+        data: {
+          id: 'foo-8',
+          isOpenByDefault: true,
+          name: 'Foo #8',
+          nestingLevel: 2,
         },
         isOpen: true,
         setOpen: expect.any(Function),

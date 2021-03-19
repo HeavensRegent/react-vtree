@@ -119,7 +119,7 @@ describe('FixedSizeTree', () => {
     expect(list).toHaveLength(1);
     expect(list.props()).toMatchObject({
       children: Row,
-      itemCount: 7,
+      itemCount: 8,
       itemData: expect.any(Object),
       itemSize: 30,
     });
@@ -200,6 +200,16 @@ describe('FixedSizeTree', () => {
         isOpen: true,
         setOpen: expect.any(Function),
       },
+      {
+        data: {
+          id: 'foo-8',
+          isOpenByDefault: true,
+          name: 'Foo #8',
+          nestingLevel: 3,
+        },
+        isOpen: true,
+        setOpen: expect.any(Function),
+      },
     ]);
   });
 
@@ -256,7 +266,7 @@ describe('FixedSizeTree', () => {
       extractReceivedRecords(component.find(FixedSizeList)).map(
         ({data: {id}}) => id,
       ),
-    ).toEqual(['foo-1', 'foo-2', 'foo-5', 'foo-6', 'foo-7']);
+    ).toEqual(['foo-1', 'foo-2', 'foo-5', 'foo-6', 'foo-7', 'foo-8']);
 
     treeWalkerSpy = jest.fn(treeWalker);
 
@@ -269,7 +279,7 @@ describe('FixedSizeTree', () => {
       extractReceivedRecords(component.find(FixedSizeList)).map(
         ({data: {id}}) => id,
       ),
-    ).toEqual(['foo-1', 'foo-2', 'foo-5', 'foo-6', 'foo-7']);
+    ).toEqual(['foo-1', 'foo-2', 'foo-5', 'foo-6', 'foo-7', 'foo-8']);
   });
 
   it('provides a itemKey function to FixedSizeList', () => {
@@ -284,6 +294,7 @@ describe('FixedSizeTree', () => {
       'foo-5',
       'foo-6',
       'foo-7',
+      'foo-8',
     ]);
   });
 
@@ -456,7 +467,7 @@ describe('FixedSizeTree', () => {
         });
         component.update(); // Update the wrapper to get the latest changes
 
-        expect(component.find(FixedSizeList).prop('itemCount')).toBe(5);
+        expect(component.find(FixedSizeList).prop('itemCount')).toBe(6);
 
         const receivedRecords = extractReceivedRecords(
           component.find(FixedSizeList),
@@ -468,6 +479,7 @@ describe('FixedSizeTree', () => {
           'foo-5',
           'foo-6',
           'foo-7',
+          'foo-8',
         ]);
       });
 
@@ -594,7 +606,7 @@ describe('FixedSizeTree', () => {
       component.update(); // Update the wrapper to get the latest changes
 
       list = component.find(FixedSizeList);
-      expect(list.prop('itemCount')).toBe(7);
+      expect(list.prop('itemCount')).toBe(8);
     });
   });
 });

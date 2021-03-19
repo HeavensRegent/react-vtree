@@ -69,7 +69,12 @@ export const defaultTree = {
     {
       children: [
         {id: 'foo-6', name: 'Foo #6'},
-        {id: 'foo-7', name: 'Foo #7'},
+        {
+          children: [
+            {id: 'foo-8', name: 'Foo #8'},
+          ],
+          id: 'foo-7', name: 'Foo #7',
+        },
       ],
       id: 'foo-5',
       name: 'Foo #5',

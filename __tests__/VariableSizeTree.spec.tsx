@@ -120,7 +120,7 @@ describe('VariableSizeTree', () => {
     expect(list).toHaveLength(1);
     expect(list.props()).toMatchObject({
       children: Row,
-      itemCount: 7,
+      itemCount: 8,
       itemData: expect.any(Object),
       itemSize: expect.any(Function),
     });
@@ -219,6 +219,19 @@ describe('VariableSizeTree', () => {
         resize: expect.any(Function),
         setOpen: expect.any(Function),
       },
+      {
+        data: {
+          defaultHeight: 30,
+          id: 'foo-8',
+          isOpenByDefault: true,
+          name: 'Foo #8',
+          nestingLevel: 3,
+        },
+        height: 30,
+        isOpen: true,
+        resize: expect.any(Function),
+        setOpen: expect.any(Function),
+      },
     ]);
   });
 
@@ -277,7 +290,7 @@ describe('VariableSizeTree', () => {
       extractReceivedRecords(component.find(VariableSizeList)).map(
         ({data: {id}}) => id,
       ),
-    ).toEqual(['foo-1', 'foo-2', 'foo-5', 'foo-6', 'foo-7']);
+    ).toEqual(['foo-1', 'foo-2', 'foo-5', 'foo-6', 'foo-7', 'foo-8']);
 
     treeWalkerSpy = jest.fn(treeWalker);
 
@@ -290,7 +303,7 @@ describe('VariableSizeTree', () => {
       extractReceivedRecords(component.find(VariableSizeList)).map(
         ({data: {id}}) => id,
       ),
-    ).toEqual(['foo-1', 'foo-2', 'foo-5', 'foo-6', 'foo-7']);
+    ).toEqual(['foo-1', 'foo-2', 'foo-5', 'foo-6', 'foo-7', 'foo-8']);
   });
 
   it('provides a itemKey function to VariableSizeList', () => {
@@ -305,6 +318,7 @@ describe('VariableSizeTree', () => {
       'foo-5',
       'foo-6',
       'foo-7',
+      'foo-8',
     ]);
   });
 
@@ -485,7 +499,7 @@ describe('VariableSizeTree', () => {
         });
         component.update(); // Update the wrapper to get the latest changes
 
-        expect(component.find(VariableSizeList).prop('itemCount')).toBe(5);
+        expect(component.find(VariableSizeList).prop('itemCount')).toBe(6);
 
         const receivedRecords = extractReceivedRecords(
           component.find(VariableSizeList),
@@ -497,6 +511,7 @@ describe('VariableSizeTree', () => {
           'foo-5',
           'foo-6',
           'foo-7',
+          'foo-8',
         ]);
       });
 
@@ -625,7 +640,35 @@ describe('VariableSizeTree', () => {
       component.update(); // Update the wrapper to get the latest changes
 
       list = component.find(VariableSizeList);
-      expect(list.prop('itemCount')).toBe(7);
+      expect(list.prop('itemCount')).toBe(8);
+    });
+
+    it('maintains visibility when tree is asynchronously updated', async () => {
+      const [{setOpen}] = extractReceivedRecords(
+        component.find(VariableSizeList),
+      );
+
+      component.setProps({
+        async: true,
+      });
+
+      // await treeInstance.recomputeTree({'foo-1': false});
+      // component.update(); // Update the wrapper to get the latest changes
+
+      await setOpen(false);
+      component.update(); // Update the wrapper to get the latest changes
+
+      let list = component.find(VariableSizeList);
+      expect(list.prop('itemCount')).toBe(1);
+      expect(extractReceivedRecords(list).map(({data: {id}}) => id)).toEqual([
+        'foo-1',
+      ]);
+
+      await setOpen(true);
+      component.update(); // Update the wrapper to get the latest changes
+
+      list = component.find(VariableSizeList);
+      expect(list.prop('itemCount')).toBe(8);
     });
 
     it('provides a resize function that changes height of the specific node', () => {
